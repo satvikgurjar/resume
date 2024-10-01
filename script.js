@@ -1,33 +1,81 @@
-const canvas = document.getElementById('candlestickCanvas');
-const ctx = canvas.getContext('2d');
-
-// Set canvas size
-canvas.width = 300;
-canvas.height = 300;
-
-// Smiley face candlestick pattern data
-const smileyData = [
-    { x: 75, y: 150, width: 50, height: 100 }, // left eye
-    { x: 175, y: 150, width: 50, height: 100 }, // right eye
-    { x: 75, y: 120, width: 150, height: 20 }, // mouth
-];
-
-function drawSmiley() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#000';
+anychart.onDocumentReady(function() {
+    // Create the chart
+    var chart = anychart.stock();
     
-    // Draw eyes
-    ctx.fillRect(smileyData[0].x, smileyData[0].y, smileyData[0].width, smileyData[0].height);
-    ctx.fillRect(smileyData[1].x, smileyData[1].y, smileyData[1].width, smileyData[1].height);
+    // Create the dataset
+    var dataset = anychart.data.table();
+    
+    // Generate initial data
+    var initialData = generateData(10);
+    dataset.addData(initialData);
 
-    // Draw mouth
-    ctx.fillRect(smileyData[2].x, smileyData[2].y, smileyData[2].width, smileyData[2].height);
-}
+    // Map the data
+    var mapping = dataset.mapAs({
+        open: 1,
+        high: 2,
+        low: 3,
+        close: 4
+    });
 
-function animate() {
-    drawSmiley();
-    requestAnimationFrame(animate);
-}
+    // Set the series
+    var series = chart.plot(0).candlestick(mapping);
+    series.name("Stock Prices");
 
-animate();
+    // Customize appearance
+    series.fallingFill("#FF0D0D");
+    series.fallingStroke("#FF0D0D");
+    series.risingFill("#43FF43");
+    series.risingStroke("#43FF43");
+
+    // Set the chart title
+    chart.title("Animated Candlestick Chart");
+
+    // Set the container id
+    chart.container("container");
+
+    // Draw the chart
+    chart.draw();
+
+    // Function to generate random data
+    function generateData(numPoints) {
+        var data = [];
+        var date = new Date();
+        var open = 100;
+        var close = 100;
+
+        for (var i = 0; i < numPoints; i++) {
+            var high = Math.max(open, close) + Math.random() * 5;
+            var low = Math.min(open, close) - Math.random() * 5;
+            
+            data.push([
+                date.getTime(),
+                open,
+                high,
+                low,
+                close
+            ]);
+
+            date.setDate(date.getDate() + 1);
+            open = close;
+            close = open + Math.random() * 10 - 5;
+        }
+
+        return data;
+    }
+
+    // Animation function
+    function addNewCandle() {
+        var newData = generateData(1);
+        dataset.addData(newData);
+        
+        // Remove oldest data point if more than 30 points
+        if (dataset.getRowsCount() > 30) {
+            dataset.remove(dataset.getRowsCount() - 31);
+        }
+
+        setTimeout(addNewCandle, 1000); // Add a new candle every second
+    }
+
+    // Start the animation
+    setTimeout(addNewCandle, 1000);
+});
