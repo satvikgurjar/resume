@@ -4,52 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Portfolio</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: white;
-        }
-        
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px 0;
-            z-index: 1000;
-        }
-        
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-        }
-        
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: #333;
-        }
-        
-        section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-        }
-        
-        #home { background-color: #f0f0f0; }
-        #about { background-color: #e0e0e0; }
-        #projects { background-color: #d0d0d0; }
-        #contact { background-color: #c0c0c0; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
@@ -67,25 +22,19 @@
 
     <section id="about">
         <h2>About Me</h2>
+        <p>Here you can write about your skills, experience, and interests.</p>
     </section>
 
     <section id="projects">
         <h2>My Projects</h2>
+        <p>Showcase your best work here with descriptions and links.</p>
     </section>
 
     <section id="contact">
         <h2>Contact Me</h2>
+        <p>Provide your contact information or a contact form here.</p>
     </section>
 
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
